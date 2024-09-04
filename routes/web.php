@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClientesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::prefix('cliente')->group(function () {
+    Route::get('/', [ClientesController::class, 'index']);
+    Route::get('/cadastrar', [ClientesController::class,'cadastrar']);
+    Route::post('/salvar', [ClientesController::class, 'salvar']);
+    Route::get('/delete/{id}', [ClientesController::class, 'deletar']);
 });
