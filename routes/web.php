@@ -21,6 +21,7 @@ Route::get('/', function () {
 Route::prefix('cliente')->group(function () {
     Route::get('/', [ClientesController::class, 'index']);
     Route::get('/cadastrar', [ClientesController::class,'cadastrar']);
+    Route::get('/editar/{id}', [ClientesController::class,'editar']);
     Route::post('/salvar', [ClientesController::class, 'salvar']);
-    Route::get('/delete/{id}', [ClientesController::class, 'deletar']);
+    Route::delete('/delete/{id}', [ClientesController::class, 'deletar']);
 });

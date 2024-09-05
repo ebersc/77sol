@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class ClientesController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Exibe a tela principal com a lista de clientes cadastrados
      */
     public function index()
     {
@@ -17,50 +17,53 @@ class ClientesController extends Controller
         return view("cliente.index", compact("clientes"));
     }
 
+    /**
+     * Exibe e view para realizar o cadastro de clientes
+     */
     public function cadastrar()
     {
         return view("cliente.cadastro");
     }
 
     /**
-     * Display the specified resource.
+     * Busca e exibe a view para editar os dados do cliente
+     * @param int $id - ID do cliente
      */
-    public function buscar(int $id)
+    public function editar(int $id)
     {
-        //
+        $cliente = (new Cliente)->editar($id);
+        return view("cliente.cadastro", compact("cliente"));
     }
 
     /**
      * Função para salvar os dados do cliente
-     * @param int id
+     * @param \Illuminate\Http\Request $request - Dados do formulário
      */
-    public function salvar(Request $request) : string
+    public function salvar(Request $request)
     {
-        $dados = [
-            'id' => $request->input('id', null),
-            'nome' => $request->input('nome'),
-            'email' => $request->input('email'),
-            'telefone' => $request->input('telefone'),
-            'cpf_cnpj' => $request->input('cpf_cnpj'),
-        ];
+        try{
+            $validatedData = $request->validate([
+                'id' => 'nullable|integer',
+                'nome' => 'required|string|max:200',
+                'email' => 'required|email|max:250',
+                'telefone' => 'required|string|max:11',
+                'cpf_cnpj' => 'required|string|max:18',
+            ],[
+                'nome.required' => 'O nome do cliente não pode estar em branco',
+                'email.required' => 'O campo email não pode estar em branco'
+            ]);
 
-        $validatedData = $request->validate([
-            'id' => 'nullable|integer',
-            'nome' => 'required|string|max:200',
-            'email' => 'required|email|max:250',
-            'telefone' => 'required|string|max:11',
-            'cpf_cnpj' => 'required|string|max:18',
-        ],[
-            'nome.required' => 'O nome do cliente não pode estar em branco',
-            'email.required' => 'O campo email não pode estar em branco'
-        ]);
+            $cliente = Cliente::find($request->input('id'));
 
-        (new Cliente)->salvar($dados);
+            (new Cliente)->salvar($request, $cliente);
 
-        return response()->json([
-            'message' => 'Dados salvos com sucesso!',
-            'data' => $validatedData
-        ]);
+            return response()->json([
+                'message' => 'Dados salvos com sucesso!',
+                'data' => $validatedData
+            ]);
+        }catch(\Exception $e){
+            return response()->json(["message" => "Ocorreu um erro ao salvar os dados. Por favor verique os dados informados e tente novamente", "data"=> $e->getMessage()]);
+        }
     }
 
     /**
@@ -68,6 +71,12 @@ class ClientesController extends Controller
      */
     public function deletar(int $id)
     {
-        (new Cliente)->deletarCliente($id);
+        try{
+            (new Cliente)->deletarCliente($id);
+            return response()->json(["message"=> "Cliente excluido com sucesso!", 200]);
+        }catch(\Exception $e){
+            return response()->json(["message"=> "Ocorreu um erro ao excluir o cliente", 500]);
+        }
+
     }
 }

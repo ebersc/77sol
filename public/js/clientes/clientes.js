@@ -19,10 +19,12 @@ $("#btnSalvar").on('click', function(){
 
     let formData = new FormData($('#form_clientes')[0]);
     let documento = $('#cpf_cnpj').val().replace(/\D/g, '');
+    let telefone = $('#telefone').val().replace(/\D/g, '');
 
     formData.append('cpf_cnpj', documento);
+    formData.append('telefone', telefone);
 
-    let url = 'salvar';
+    let url = '/cliente/salvar';
 
     $.ajax({
         type: 'POST',
@@ -30,8 +32,9 @@ $("#btnSalvar").on('click', function(){
         data: formData,
         processData: false,
         contentType: false
-    }).done(function (data){
-        alert('Salvo com sucesso!');
+    }).done(function (resp){
+        alert(resp.message);
+        localtion.href = '/cliente'
     }).fail(function(err){
         console.log(err);
     });
