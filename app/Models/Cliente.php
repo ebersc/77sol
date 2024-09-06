@@ -60,4 +60,9 @@ class Cliente extends Model
             throw $e;
         }
     }
+
+    public function projeto()
+    {
+        return $this->hasMany(Projeto::class);
+    }
 }
