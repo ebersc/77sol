@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class ClientesController extends Controller
 {
+    public function __construct()
+    {
+        // Verifique se o middleware CSRF não está sendo aplicado acidentalmente
+        $this->middleware('auth:api', ['except' => ['deletar']]);
+    }
+
     /**
      * Exibe a tela principal com a lista de clientes cadastrados
      */
@@ -41,29 +47,23 @@ class ClientesController extends Controller
      */
     public function salvar(Request $request)
     {
-        try{
-            $validatedData = $request->validate([
-                'id' => 'nullable|integer',
-                'nome' => 'required|string|max:200',
-                'email' => 'required|email|max:250',
-                'telefone' => 'required|string|max:11',
-                'cpf_cnpj' => 'required|string|max:18',
-            ],[
-                'nome.required' => 'O nome do cliente não pode estar em branco',
-                'email.required' => 'O campo email não pode estar em branco'
-            ]);
+        $validatedData = $request->validate([
+            'id' => 'nullable|integer',
+            'nome' => 'required|string|max:200',
+            'email' => 'required|email|max:250',
+            'telefone' => 'required|string|max:11',
+            'cpf_cnpj' => 'required|string|max:18',
+        ]);
 
-            $cliente = Cliente::find($request->input('id'));
+        $cliente = Cliente::find($request->input('id'));
 
-            (new Cliente)->salvar($request, $cliente);
+        $cliente = (new Cliente)->salvar($request, $cliente);
 
-            return response()->json([
-                'message' => 'Dados salvos com sucesso!',
-                'data' => $validatedData
-            ]);
-        }catch(\Exception $e){
-            return response()->json(["message" => "Ocorreu um erro ao salvar os dados. Por favor verique os dados informados e tente novamente", "data"=> $e->getMessage()]);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Cliente cadastrado com sucesso!',
+            'cliente' => $cliente,
+        ], 201);
     }
 
     /**
@@ -71,11 +71,11 @@ class ClientesController extends Controller
      */
     public function deletar(int $id)
     {
-        try{
+        try {
             (new Cliente)->deletarCliente($id);
-            return response()->json(["message"=> "Cliente excluido com sucesso!", 200]);
-        }catch(\Exception $e){
-            return response()->json(["message"=> "Ocorreu um erro ao excluir o cliente", 500]);
+            return response()->json(["message" => "Cliente excluido com sucesso!", 200]);
+        } catch (\Exception $e) {
+            return response()->json(["message" => "Ocorreu um erro ao excluir o cliente", 250]);
         }
 
     }
