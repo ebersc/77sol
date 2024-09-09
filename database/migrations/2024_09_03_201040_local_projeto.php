@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('local_projeto', function (Blueprint $table) {
+        Schema::table('local_projeto', function (Blueprint $table) {
             $table->id();
-            $table->string('uf');
+            $table->string('nome', 100);
+            $table->string('sigla', 2)->unique();
             $table->timestamps();
         });
     }
