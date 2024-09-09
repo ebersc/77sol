@@ -49,6 +49,8 @@
     </div>
     <br>
     <button id="btnNovoCliente">Cadastrar Cliente</button>
+    &nbsp;
+    <button type="button" onclick="location.href = '/'">Voltar</button>
 </div>
 <script src="{{ asset('js/jquery.js') }}"></script>
 

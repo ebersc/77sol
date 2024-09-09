@@ -38,6 +38,8 @@
         </tr>
     </table>
     <button onclick="editarProjeto({{ $dados['projeto']->id }})" type="button">Editar projeto</button>
+    &nbsp;
+    <button type="button" onclick="history.go(-1)">Voltar</button>
     <script src="{{ asset('js/jquery.js') }}"></script>
 
     <script src="{{ asset('js/projeto/projetos.js') }}"></script>

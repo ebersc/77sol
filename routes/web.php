@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\ProjetosController;
+use App\Http\Controllers\EquipamentosController;
+use App\Http\Controllers\TiposInstalacaoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,4 +36,12 @@ Route::prefix('projeto')->group(function (){
     Route::get('/editar/{id}', [ProjetosController::class, 'editar']);
     Route::post('/salvar', [ProjetosController::class, 'salvarProjeto']);
     Route::delete('/delete/{id}', [ProjetosController::class, 'deletar']);
+});
+
+Route::prefix('equipamento')->group(function (){
+    Route::get('/', [EquipamentosController::class, 'index']);
+});
+
+Route::prefix('tipo_instalacao')->group(function(){
+    Route::get('/', [TiposInstalacaoController::class, 'index']);
 });

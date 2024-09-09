@@ -72,6 +72,8 @@
                 </div>
             </form>
             <button type="button" id="btnSalvar">Salvar</button>
+            &nbsp;
+            <button type="button" onclick="history.go(-1)">Voltar</button>
         </div>
     </div>
     <script src="{{ asset('js/jquery.js') }}"></script>

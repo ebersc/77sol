@@ -26,4 +26,9 @@ class Equipamento extends Model
                     ->select('equipamento.id', 'equipamento.nome_equipamento', 'equipamentos_projetos.quantidade')
                     ->get();
     }
+
+    public function buscarTodos()
+    {
+        return $this->all();
+    }
 }

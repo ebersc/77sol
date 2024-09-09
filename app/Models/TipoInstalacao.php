@@ -12,4 +12,9 @@ class TipoInstalacao extends Model
     protected $table = 'tipo_instalacao';
 
     protected $fillable = ['id', 'tipo'];
+
+    public function buscarTodos()
+    {
+        return $this->all();
+    }
 }
