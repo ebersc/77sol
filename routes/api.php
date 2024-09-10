@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 /**
  * @OA\Delete(
- *      path="/api/cliente/delete{id}",
+ *      path="/cliente/delete/{id}",
  *      summary="Deletar um cliente",
  *      tags={"Clientes"},
  *      @OA\Parameter(
@@ -43,16 +43,16 @@ Route::prefix('projeto')->group(function (){
 
     /**
      * @OA\Post(
-     *     path="/api/projeto/salvar",
+     *     path="/projeto/salvar",
      *     summary="Cadastrar um novo projeto",
-     *     tags={"Projeto"},
+     *     tags={"Projetos"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
      *             required={"cliente_id", "local_id", "tipo_instalacao_id"},
-     *             @OA\Property(property="cliente_id", type="int", example="1"),
-     *             @OA\Property(property="local_id", type="int", example="2"),
-     *             @OA\Property(property="tipo_instalacao_id", type="int", example="3"),
+     *             @OA\Property(property="cliente_id", type="integer", example=1),
+     *             @OA\Property(property="local_id", type="integer", example=2),
+     *             @OA\Property(property="tipo_instalacao_id", type="integer", example=3),
      *             @OA\Property(property="equipamento", type="object"),
      *         ),
      *     ),
@@ -70,7 +70,7 @@ Route::prefix('projeto')->group(function (){
 
     /**
      * @OA\Delete(
-     *      path="/api/projeto/delete{id}",
+     *      path="/api/projeto/delete/{id}",
      *      summary="Deletar um projeto",
      *      tags={"Projetos"},
      *      @OA\Parameter(

@@ -6,17 +6,17 @@ use App\Http\Controllers\EquipamentosController;
 use App\Http\Controllers\TiposInstalacaoController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
+/**
+ * @OA\Get(
+ *      path="/",
+ *      summary="Tela inicial",
+ *      tags={"Menu"},
+ *      @OA\Response(
+ *          response=200,
+ *          description="Tela inicial"
+ *      )
+ * )
+ */
 Route::get('/', function () {
     return view('welcome');
 });
@@ -29,7 +29,7 @@ Route::prefix('cliente')->group(function () {
      *      summary="Listar todos os clientes cadastrados",
      *      tags={"Clientes"},
      *      @OA\Response(
-     *          reponse=200,
+     *          response=200,
      *          description="Lista de clientes"
      *      )
      * )
@@ -42,7 +42,7 @@ Route::prefix('cliente')->group(function () {
      *      summary="Exibir o form de cadastro de clientes",
      *      tags={"Clientes"},
      *      @OA\Response(
-     *          reponse=200,
+     *          response=200,
      *          description="Exibir o form de cadastro de clientes"
      *      ),
      *      @OA\Response(
@@ -58,8 +58,14 @@ Route::prefix('cliente')->group(function () {
      *      path="/cliente/editar/{id}",
      *      summary="Exibir o form de editar o cliente",
      *      tags={"Clientes"},
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          @OA\Schema(type="integer")
+     *      ),
      *      @OA\Response(
-     *          reponse=200,
+     *          response=200,
      *          description="Exibir o form de editar o cliente"
      *      ),
      *      @OA\Response(
@@ -74,7 +80,7 @@ Route::prefix('cliente')->group(function () {
      * @OA\Post(
      *     path="/cliente/salvar",
      *     summary="Cadastrar um novo cliente",
-     *     tags={"Cliente"},
+     *     tags={"Clientes"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -99,7 +105,7 @@ Route::prefix('cliente')->group(function () {
 
     /**
      * @OA\Delete(
-     *      path="/cliente/delete{id}",
+     *      path="/cliente/delete/{id}",
      *      summary="Deletar um cliente",
      *      tags={"Clientes"},
      *      @OA\Parameter(
@@ -129,7 +135,7 @@ Route::prefix('projeto')->group(function (){
      *      summary="Listar todos os projetos cadastrados",
      *      tags={"Projetos"},
      *      @OA\Response(
-     *          reponse=200,
+     *          response=200,
      *          description="Lista de projetos"
      *      )
      * )
@@ -140,13 +146,13 @@ Route::prefix('projeto')->group(function (){
      * @OA\Post(
      *     path="/projeto",
      *     summary="Lista os projetos aplicando um filtro de busca",
-     *     tags={"Projeto"},
+     *     tags={"Projetos"},
      *     @OA\RequestBody(
      *         required=false,
      *         @OA\JsonContent(
-     *             @OA\Property(property="cliente_id", type="int", example="1"),
-     *             @OA\Property(property="local_id", type="int", example="2"),
-     *             @OA\Property(property="tipo_instalacao_id", type="int", example="3"),
+     *             @OA\Property(property="cliente_id", type="integer", example=1),
+     *             @OA\Property(property="local_id", type="integer", example=2),
+     *             @OA\Property(property="tipo_instalacao_id", type="integer", example=3),
      *         ),
      *     ),
      *     @OA\Response(
@@ -163,7 +169,7 @@ Route::prefix('projeto')->group(function (){
      *      summary="Exibir o form de cadastro de projetos",
      *      tags={"Projetos"},
      *      @OA\Response(
-     *          reponse=200,
+     *          response=200,
      *          description="Exibir o form de cadastro de projetos"
      *      ),
      *      @OA\Response(
@@ -179,8 +185,14 @@ Route::prefix('projeto')->group(function (){
      *      path="/projeto/detalhes/{id}",
      *      summary="Exibir os detalhes do projeto",
      *      tags={"Projetos"},
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          @OA\Schema(type="integer")
+     *      ),
      *      @OA\Response(
-     *          reponse=200,
+     *          response=200,
      *          description="Exibir os detalhes do projeto"
      *      ),
      *      @OA\Response(
@@ -196,8 +208,14 @@ Route::prefix('projeto')->group(function (){
      *      path="/projeto/editar/{id}",
      *      summary="Exibir o form para editar o projeto",
      *      tags={"Projetos"},
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          @OA\Schema(type="integer")
+     *      ),
      *      @OA\Response(
-     *          reponse=200,
+     *          response=200,
      *          description="Exibir o form para editar o projeto"
      *      ),
      *      @OA\Response(
@@ -212,14 +230,14 @@ Route::prefix('projeto')->group(function (){
      * @OA\Post(
      *     path="/projeto/salvar",
      *     summary="Cadastrar um novo projeto",
-     *     tags={"Projeto"},
+     *     tags={"Projetos"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
      *             required={"cliente_id", "local_id", "tipo_instalacao_id"},
-     *             @OA\Property(property="cliente_id", type="int", example="1"),
-     *             @OA\Property(property="local_id", type="int", example="2"),
-     *             @OA\Property(property="tipo_instalacao_id", type="int", example="3"),
+     *             @OA\Property(property="cliente_id", type="integer", example=1),
+     *             @OA\Property(property="local_id", type="integer", example=2),
+     *             @OA\Property(property="tipo_instalacao_id", type="integer", example=3),
      *             @OA\Property(property="equipamento", type="object"),
      *         ),
      *     ),
@@ -237,7 +255,7 @@ Route::prefix('projeto')->group(function (){
 
     /**
      * @OA\Delete(
-     *      path="/projeto/delete{id}",
+     *      path="/projeto/delete/{id}",
      *      summary="Deletar um projeto",
      *      tags={"Projetos"},
      *      @OA\Parameter(
@@ -266,7 +284,7 @@ Route::prefix('equipamento')->group(function (){
      *      summary="Listar todos os equipamentos",
      *      tags={"Equipamentos"},
      *      @OA\Response(
-     *          reponse=200,
+     *          response=200,
      *          description="Lista de equipamentos"
      *      )
      * )
@@ -281,7 +299,7 @@ Route::prefix('tipo_instalacao')->group(function(){
      *      summary="Listar todos os Tipos de instalação",
      *      tags={"TiposInstalacao"},
      *      @OA\Response(
-     *          reponse=200,
+     *          response=200,
      *          description="Lista de Tipos de instalação"
      *      )
      * )
