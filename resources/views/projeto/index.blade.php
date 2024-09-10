@@ -11,7 +11,38 @@
         <div>
             <h2>Projetos</h2>
             <br>
-            @csrf
+            <form action="" method="post">
+                <fieldset>
+                    @csrf
+                    <legend>Filtros</legend>
+                    <label for="name">Cliente: </label>
+                    <select name="cliente_id" id="nome">
+                        <option value=""></option>
+                        @foreach ($dados['clientes'] as $cliente)
+                            <option value="{{ $cliente->id }}">{{ $cliente->nome }}</option>
+                        @endforeach
+                    </select>
+                    <div>
+                        <label for="local">Localização:</label>
+                        <select name="local_id" id="local">
+                            <option value=""></option>
+                            @foreach ($dados['locais'] as $local)
+                                <option value="{{ $local->id }}">{{ $local->sigla }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label for="tipo_instalacao">Tipo de instalação:</label>
+                        <select name="tipo_instalacao_id" id="tipo_instalacao">
+                            <option value=""></option>
+                            @foreach ($dados['tipo_instalacao'] as $tipo_instalacao)
+                                <option value="{{ $tipo_instalacao->id }}">{{ $tipo_instalacao->tipo }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button type="submit">Filtrar</button>
+                </fieldset>
+            </form>
             <table border="1">
                 <tr>
                     <td>Código do Projeto</td>
@@ -48,7 +79,7 @@
             </table>
         </div>
         <br>
-        <button id="btnNovoProjeto">Cadastrar novo projeto</button>
+        <button id="btnNovoProjeto" onclick="location.href = '/projeto/cadastrar'">Cadastrar novo projeto</button>
         &nbsp;
         <button type="button" onclick="location.href = '/';">Voltar</button>
     </div>

@@ -1,0 +1,244 @@
+openapi: 3.0.0
+info:
+  title: '77sol case'
+  version: '0.1'
+paths:
+  /cliente:
+    get:
+      tags:
+        - Clientes
+      summary: 'Listar todos os clientes cadastrados'
+      operationId: 61532734703613e136be9f3de7334921
+      responses:
+        '200':
+          description: 'Lista de clientes'
+  /projeto:
+    get:
+      tags:
+        - Projetos
+      summary: 'Listar todos os projetos cadastrados'
+      responses:
+        '200':
+          description: 'Lista de projetos'
+    post:
+      tags:
+        - Projetos
+      summary: 'Lista os projetos aplicando um filtro de busca'
+      operationId: c00671eff306b30693221d2469f7a941
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              properties:
+                cliente_id:
+                  type: integer
+                  example: 1
+                local_id:
+                  type: integer
+                  example: 2
+                tipo_instalacao_id:
+                  type: integer
+                  example: 3
+              type: object
+      responses:
+        '200':
+          description: 'Lista de projetos'
+  /cliente/cadastrar:
+    get:
+      tags:
+        - Clientes
+      summary: 'Exibir o form de cadastro de clientes'
+      operationId: 627f750c358e74ddb541b439aa73b8bb
+      responses:
+        '200':
+          description: 'Exibir o form de cadastro de clientes'
+        '401':
+          description: 'Não autorizado'
+  '/cliente/editar/{id}':
+    get:
+      tags:
+        - Clientes
+      summary: 'Exibir o form de editar o cliente'
+      operationId: 1ad44f7b9dbc54fde132aeb0ef2ede00
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Exibir o form de editar o cliente'
+        '401':
+          description: 'Não autorizado'
+  /cliente/salvar:
+    post:
+      tags:
+        - Clientes
+      summary: 'Cadastrar um novo cliente'
+      operationId: 7ff7ad04e6c261385fcd4b8219b1c28b
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - nome
+                - email
+                - telefone
+                - cpf_cnpj
+              properties:
+                nome:
+                  type: string
+                  example: 'Pedro da Silva'
+                email:
+                  type: string
+                  example: pedro.silva@example.com
+                telefone:
+                  type: string
+                  example: '11944448888'
+                cpf_cnpj:
+                  type: string
+                  example: '12345678911'
+              type: object
+      responses:
+        '201':
+          description: 'Cliente cadastrado com sucesso'
+        '400':
+          description: 'Requisição inválida'
+  '/api/cliente/delete/{id}':
+    delete:
+      tags:
+        - Clientes
+      summary: 'Deletar um cliente'
+      operationId: 3c9c2f32fea732a4ed99b4f5be59ef31
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Cliente deletado com sucesso'
+        '500':
+          description: 'Ocorreu um erro ao excluir o cliente'
+  /equipamento:
+    get:
+      tags:
+        - Equipamentos
+      summary: 'Listar todos os equipamentos'
+      operationId: 40be77d8bdea15ed0efc94155840b6e0
+      responses:
+        '200':
+          description: 'Lista de equipamentos'
+  /projeto/cadastrar:
+    get:
+      tags:
+        - Projetos
+      summary: 'Exibir o form de cadastro de projetos'
+      operationId: 1defdd223b07f8e85836667892207190
+      responses:
+        '200':
+          description: 'Exibir o form de cadastro de projetos'
+        '401':
+          description: 'Não autorizado'
+  '/projeto/editar/{id}':
+    get:
+      tags:
+        - Projetos
+      summary: 'Exibir o form para editar o projeto'
+      operationId: 5acbed70872c252da76ef816de2aaf3f
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Exibir o form para editar o projeto'
+        '401':
+          description: 'Não autorizado'
+  '/projeto/detalhes/{id}':
+    get:
+      tags:
+        - Projetos
+      summary: 'Exibir os detalhes do projeto'
+      operationId: f5b1987f092156d4de1dfade90a134d8
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Exibir os detalhes do projeto'
+        '401':
+          description: 'Não autorizado'
+  /api/projeto/salvar:
+    post:
+      tags:
+        - Projetos
+      summary: 'Cadastrar um novo projeto'
+      operationId: 666505b8ca32a1dfd9a552cf23a60de8
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - cliente_id
+                - local_id
+                - tipo_instalacao_id
+              properties:
+                cliente_id:
+                  type: integer
+                  example: 1
+                local_id:
+                  type: integer
+                  example: 2
+                tipo_instalacao_id:
+                  type: integer
+                  example: 3
+                equipamento:
+                  type: object
+              type: object
+      responses:
+        '200':
+          description: 'Projeto cadastrado com sucesso'
+        '400':
+          description: 'Requisição inválida'
+  '/api/projeto/delete/{id}':
+    delete:
+      tags:
+        - Projetos
+      summary: 'Deletar um projeto'
+      operationId: ed08be235a57c62e3115a4fdf92a0b4d
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Projeto deletado com sucesso'
+        '500':
+          description: 'Ocorreu um erro ao excluir o projeto'
+  /tipo_instalacao:
+    get:
+      tags:
+        - TiposInstalacao
+      summary: 'Listar todos os Tipos de instalação'
+      operationId: d0292cfa3045e1067d00fd223b3b7ed2
+      responses:
+        '200':
+          description: 'Lista de Tipos de instalação'

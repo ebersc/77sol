@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ClientesController;
+use App\Http\Controllers\ProjetosController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::delete('/cliente/delete/{id}', [ClientesController::class, 'deletar']);
+
+Route::prefix('projeto')->group(function (){
+    Route::post('/salvar', [ProjetosController::class, 'salvarProjeto']);
+    Route::delete('/delete/{id}', [ProjetosController::class, 'deletar']);
 });

@@ -4,11 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Info(
+ *      title="77sol case",
+ *      version="0.1"
+ * )
+ *
+ * @OA\PathItem(
+ *      path="/cliente"
+ * )
+ */
 class ClientesController extends Controller
 {
     /**
-     * Exibe a tela principal com a lista de clientes cadastrados
+     * @OA\Get(
+     *      path="/cliente",
+     *      summary="Listar todos os clientes cadastrados",
+     *      tags={"Clientes"},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Lista de clientes"
+     *      )
+     * )
      */
     public function index()
     {
@@ -18,7 +37,19 @@ class ClientesController extends Controller
     }
 
     /**
-     * Exibe e view para realizar o cadastro de clientes
+     * @OA\Get(
+     *      path="/cliente/cadastrar",
+     *      summary="Exibir o form de cadastro de clientes",
+     *      tags={"Clientes"},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Exibir o form de cadastro de clientes"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Não autorizado"
+     *      )
+     * )
      */
     public function cadastrar()
     {
@@ -26,8 +57,25 @@ class ClientesController extends Controller
     }
 
     /**
-     * Busca e exibe a view para editar os dados do cliente
-     * @param int $id - ID do cliente
+     * @OA\Get(
+     *      path="/cliente/editar/{id}",
+     *      summary="Exibir o form de editar o cliente",
+     *      tags={"Clientes"},
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          @OA\Schema(type="integer")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Exibir o form de editar o cliente"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Não autorizado"
+     *      )
+     * )
      */
     public function editar(int $id)
     {
@@ -36,46 +84,79 @@ class ClientesController extends Controller
     }
 
     /**
-     * Função para salvar os dados do cliente
-     * @param \Illuminate\Http\Request $request - Dados do formulário
+     * @OA\Post(
+     *     path="/cliente/salvar",
+     *     summary="Cadastrar um novo cliente",
+     *     tags={"Clientes"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"nome","email", "telefone", "cpf_cnpj"},
+     *             @OA\Property(property="nome", type="string", example="Pedro da Silva"),
+     *             @OA\Property(property="email", type="string", example="pedro.silva@example.com"),
+     *             @OA\Property(property="telefone", type="string", example="11944448888"),
+     *             @OA\Property(property="cpf_cnpj", type="string", example="12345678911"),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Cliente cadastrado com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Requisição inválida"
+     *     )
+     * )
      */
     public function salvar(Request $request)
     {
-        try{
-            $validatedData = $request->validate([
-                'id' => 'nullable|integer',
-                'nome' => 'required|string|max:200',
-                'email' => 'required|email|max:250',
-                'telefone' => 'required|string|max:11',
-                'cpf_cnpj' => 'required|string|max:18',
-            ],[
-                'nome.required' => 'O nome do cliente não pode estar em branco',
-                'email.required' => 'O campo email não pode estar em branco'
-            ]);
+        $validatedData = $request->validate([
+            'id' => 'nullable|integer',
+            'nome' => 'required|string|max:200',
+            'email' => 'required|email|max:250',
+            'telefone' => 'required|string|max:11',
+            'cpf_cnpj' => 'required|string|max:18',
+        ]);
 
-            $cliente = Cliente::find($request->input('id'));
+        $cliente = Cliente::find($request->input('id'));
 
-            (new Cliente)->salvar($request, $cliente);
+        $cliente = (new Cliente)->salvar($request, $cliente);
 
-            return response()->json([
-                'message' => 'Dados salvos com sucesso!',
-                'data' => $validatedData
-            ]);
-        }catch(\Exception $e){
-            return response()->json(["message" => "Ocorreu um erro ao salvar os dados. Por favor verique os dados informados e tente novamente", "data"=> $e->getMessage()]);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Cliente cadastrado com sucesso!',
+            'cliente' => $cliente,
+        ], 201);
     }
 
     /**
-     * Apagar o registro de um cliente
+     * @OA\Delete(
+     *      path="/api/cliente/delete/{id}",
+     *      summary="Deletar um cliente",
+     *      tags={"Clientes"},
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          @OA\Schema(type="integer")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Cliente deletado com sucesso"
+     *      ),
+     *      @OA\Response(
+     *          response=500,
+     *          description="Ocorreu um erro ao excluir o cliente"
+     *      )
+     * )
      */
     public function deletar(int $id)
     {
-        try{
+        try {
             (new Cliente)->deletarCliente($id);
-            return response()->json(["message"=> "Cliente excluido com sucesso!", 200]);
-        }catch(\Exception $e){
-            return response()->json(["message"=> "Ocorreu um erro ao excluir o cliente", 500]);
+            return response()->json(["message" => "Cliente excluido com sucesso!"], 200);
+        } catch (\Exception $e) {
+            return response()->json(["message" => "Ocorreu um erro ao excluir o cliente"], 500);
         }
 
     }

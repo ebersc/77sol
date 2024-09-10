@@ -6,17 +6,6 @@ use App\Http\Controllers\EquipamentosController;
 use App\Http\Controllers\TiposInstalacaoController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -31,6 +20,7 @@ Route::prefix('cliente')->group(function () {
 
 Route::prefix('projeto')->group(function (){
     Route::get('/', [ProjetosController::class, 'index']);
+    Route::post('/', [ProjetosController::class, 'index']);
     Route::get('/cadastrar', [ProjetosController::class, 'cadastrar']);
     Route::get('/detalhes/{id}', [ProjetosController::class, 'verDetalhes']);
     Route::get('/editar/{id}', [ProjetosController::class, 'editar']);

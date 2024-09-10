@@ -14,6 +14,8 @@ class Cliente extends Model
 
     /**
      * Retorna todos os clientes cadastrados
+     * @access public
+     * @return mixed
      */
     public function buscarTodos()
     {
@@ -23,6 +25,8 @@ class Cliente extends Model
     /**
      * Busca as informações de um cliente para realizar a edição do cadastro
      * @param int $id_cliente - ID do cliente
+     * @access public
+     * @return mixed
      */
     public function editar(int $id_cliente)
     {
@@ -33,6 +37,8 @@ class Cliente extends Model
      * Cadastra um cliente e caso o cliente já exista atualiza as informações
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Cliente|null $cliente
+     * @access public
+     * @return void
      */
     public function salvar(Request $request, Cliente $cliente = null)
     {
@@ -51,6 +57,8 @@ class Cliente extends Model
     /**
      * Exclui o registro de um cliente
      * @param int $id_cliente - ID do cliente
+     * @access public
+     * @return void
      */
     public function deletarCliente(int $id_cliente)
     {
@@ -61,6 +69,10 @@ class Cliente extends Model
         }
     }
 
+    /**
+     * Relacionamento cliente e projeto 1:N
+     * @return mixed
+     */
     public function projeto()
     {
         return $this->hasMany(Projeto::class);
