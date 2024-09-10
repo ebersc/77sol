@@ -41,8 +41,7 @@ class ProjetosController extends Controller
 
         $dados = $this->montaDadosCombosFormulario();
 
-        if($projeto)
-        {
+        if ($projeto) {
             $dados['equipamento'] = $projeto['equipamento'];
         }
 
@@ -70,18 +69,14 @@ class ProjetosController extends Controller
      */
     public function salvarProjeto(Request $request)
     {
-        try{
-            $projeto = Projeto::find($request->input('id'));
+        $projeto = Projeto::find($request->input('id'));
 
-            $id_projeto = (new Projeto)->salvar($request, $projeto);
-            (new EquipamentosProjeto)->salvar($request, $id_projeto);
+        $id_projeto = (new Projeto)->salvar($request, $projeto);
+        (new EquipamentosProjeto)->salvar($request, $id_projeto);
 
-            return response()->json([
-                'message' => 'Dados salvos com sucesso!'
-            ]);
-        }catch(\Exception $e){
-            return response()->json(["message" => "Ocorreu um erro ao salvar os dados. Por favor verique os dados informados e tente novamente", "data"=> $e->getMessage()]);
-        }
+        return response()->json([
+            'message' => 'Dados salvos com sucesso!',
+        ], 201);
     }
 
     /**
@@ -89,12 +84,12 @@ class ProjetosController extends Controller
      */
     public function deletar(int $id)
     {
-        try{
+        try {
             (new EquipamentosProjeto)->deletarEquipamentosProjeto($id);
             (new Projeto)->deletarProjeto($id);
-            return response()->json(["message"=> "Projeto excluido com sucesso!", 200]);
-        }catch(\Exception $e){
-            return response()->json(["message"=> "Ocorreu um erro ao excluir o projeto", 500]);
+            return response()->json(["message" => "Projeto excluido com sucesso!", 200]);
+        } catch (\Exception $e) {
+            return response()->json(["message" => "Ocorreu um erro ao excluir o projeto", 500]);
         }
 
     }
@@ -104,7 +99,7 @@ class ProjetosController extends Controller
      * @param int $id_projeto
      * @return array
      */
-    private function retornaDetalhesProjeto(int $id_projeto) : array
+    private function retornaDetalhesProjeto(int $id_projeto): array
     {
         $projeto = (new Projeto)->buscarDetalhes($id_projeto);
 
@@ -116,7 +111,7 @@ class ProjetosController extends Controller
         ];
     }
 
-    private function montaDadosCombosFormulario() : array
+    private function montaDadosCombosFormulario(): array
     {
         return [
             'clientes' => Cliente::all(),
@@ -126,11 +121,11 @@ class ProjetosController extends Controller
         ];
     }
 
-    private function getEquipamentos() : array
+    private function getEquipamentos(): array
     {
-        $dados =  (new Equipamento)->all()->toArray();
+        $dados = (new Equipamento)->all()->toArray();
 
-        foreach($dados as $key => $value){
+        foreach ($dados as $key => $value) {
             $id = $value['id'];
             $equipamento['equipamento'][$id] = $value['nome_equipamento'];
         }

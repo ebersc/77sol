@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 
 class Projeto extends Model
 {
+    use HasFactory;
+
     protected $fillable = ["id", "cliente_id", "local_id", "tipo_instalacao_id"];
 
     /**
