@@ -7,12 +7,6 @@ use Illuminate\Http\Request;
 
 class ClientesController extends Controller
 {
-    public function __construct()
-    {
-        // Verifique se o middleware CSRF não está sendo aplicado acidentalmente
-        $this->middleware('auth:api', ['except' => ['deletar']]);
-    }
-
     /**
      * Exibe a tela principal com a lista de clientes cadastrados
      */
