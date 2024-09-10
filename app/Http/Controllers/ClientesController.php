@@ -9,6 +9,8 @@ class ClientesController extends Controller
 {
     /**
      * Exibe a tela principal com a lista de clientes cadastrados
+     * @access public
+     * @return mixed
      */
     public function index()
     {
@@ -19,6 +21,8 @@ class ClientesController extends Controller
 
     /**
      * Exibe e view para realizar o cadastro de clientes
+     * @access public
+     * @return mixed
      */
     public function cadastrar()
     {
@@ -28,6 +32,8 @@ class ClientesController extends Controller
     /**
      * Busca e exibe a view para editar os dados do cliente
      * @param int $id - ID do cliente
+     * @access public
+     * @return mixed
      */
     public function editar(int $id)
     {
@@ -38,6 +44,8 @@ class ClientesController extends Controller
     /**
      * Função para salvar os dados do cliente
      * @param \Illuminate\Http\Request $request - Dados do formulário
+     * @access public
+     * @return mixed
      */
     public function salvar(Request $request)
     {
@@ -62,14 +70,17 @@ class ClientesController extends Controller
 
     /**
      * Apagar o registro de um cliente
+     * @param int $id - ID do cliente
+     * @access public
+     * @return mixed
      */
     public function deletar(int $id)
     {
         try {
             (new Cliente)->deletarCliente($id);
-            return response()->json(["message" => "Cliente excluido com sucesso!", 200]);
+            return response()->json(["message" => "Cliente excluido com sucesso!"], 200);
         } catch (\Exception $e) {
-            return response()->json(["message" => "Ocorreu um erro ao excluir o cliente", 250]);
+            return response()->json(["message" => "Ocorreu um erro ao excluir o cliente"], 500);
         }
 
     }

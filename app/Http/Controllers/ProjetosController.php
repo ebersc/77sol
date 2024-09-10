@@ -14,16 +14,22 @@ class ProjetosController extends Controller
 {
     /**
      * Exibe a tela principal com a lista de projetos cadastrados
+     * @param \Illuminate\Http\Request $request - Filtros para a listagem
+     * @access public
+     * @return mixed
      */
-    public function index()
+    public function index(Request $request)
     {
-        $projetos = (new Projeto)->buscarTodos();
+        $projetos = (new Projeto)->buscarTodos($request);
+        $dados = $this->montaDadosCombosFormulario();
 
-        return view("projeto.index", compact("projetos"));
+        return view("projeto.index", compact("projetos", "dados"));
     }
 
     /**
      * Exibe e view para realizar o cadastro de um projeto
+     * @access public
+     * @return mixed
      */
     public function cadastrar()
     {
@@ -34,6 +40,8 @@ class ProjetosController extends Controller
     /**
      * Busca e exibe a view para editar os dados do projeto
      * @param int $id - ID do projeto
+     * @access public
+     * @return mixed
      */
     public function editar(int $id)
     {
@@ -51,8 +59,9 @@ class ProjetosController extends Controller
     }
 
     /**
-     * Summary of verDetalhes
-     * @param int $id
+     * Exibir os detalhes do projeto
+     * @param int $id - ID do projeto
+     * @access public
      * @return mixed
      */
     public function verDetalhes(int $id)
@@ -63,8 +72,9 @@ class ProjetosController extends Controller
     }
 
     /**
-     * Summary of salvarProjeto
+     * Salvar o projeto ou atualizar as informações caso seja enviado o ID no request
      * @param \Illuminate\Http\Request $request
+     * @access public
      * @return mixed
      */
     public function salvarProjeto(Request $request)
@@ -81,22 +91,26 @@ class ProjetosController extends Controller
 
     /**
      * Apagar o registro de um projeto
+     * @param int $id - ID do projeto
+     * @access public
+     * @return mixed
      */
     public function deletar(int $id)
     {
         try {
             (new EquipamentosProjeto)->deletarEquipamentosProjeto($id);
             (new Projeto)->deletarProjeto($id);
-            return response()->json(["message" => "Projeto excluido com sucesso!", 200]);
+            return response()->json(["message" => "Projeto excluido com sucesso!"], 200);
         } catch (\Exception $e) {
-            return response()->json(["message" => "Ocorreu um erro ao excluir o projeto", 500]);
+            return response()->json(["message" => "Ocorreu um erro ao excluir o projeto"], 500);
         }
 
     }
 
     /**
-     * Summary of retornaDetalhesProjeto
-     * @param int $id_projeto
+     * Retorna um array com os dados do projeto e os equipamentos a serem utilizados
+     * @param int $id_projeto - ID do projeto
+     * @access private
      * @return array
      */
     private function retornaDetalhesProjeto(int $id_projeto): array
@@ -111,6 +125,11 @@ class ProjetosController extends Controller
         ];
     }
 
+    /**
+     * Retorna um array com dados para a montagem dos selects
+     * @access private
+     * @return array
+     */
     private function montaDadosCombosFormulario(): array
     {
         return [
@@ -121,6 +140,11 @@ class ProjetosController extends Controller
         ];
     }
 
+    /**
+     * Retorna um array com a lista de todos os equipamentos disponiveis
+     * @access private
+     * @return array
+     */
     private function getEquipamentos(): array
     {
         $dados = (new Equipamento)->all()->toArray();

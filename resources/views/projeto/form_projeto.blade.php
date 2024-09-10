@@ -21,7 +21,7 @@
                     <label for="nome">Cliente:</label>
                     <select name="cliente_id" id="nome">
                         @foreach ($dados['clientes'] as $cliente)
-                            @if ($cliente->id == $dados['projeto']->cliente_id)
+                            @if (isset($dados['projeto']) && $cliente->id == $dados['projeto']->cliente_id)
                                 <option value="{{ $cliente->id }}" selected>{{ $cliente->nome }}</option>
                             @else
                                 <option value="{{ $cliente->id }}">{{ $cliente->nome }}</option>
@@ -33,7 +33,7 @@
                     <label for="local">Localização:</label>
                     <select name="local_id" id="local">
                         @foreach ($dados['locais'] as $local)
-                            @if ($local->id == $dados['projeto']->local_id)
+                            @if (isset($dados['projeto']) && $local->id == $dados['projeto']->local_id)
                                 <<option value="{{ $local->id }}" selected>{{ $local->sigla }}</option>
                             @else
                                 <option value="{{ $local->id }}">{{ $local->sigla }}</option>
@@ -45,7 +45,7 @@
                     <label for="tipo_instalacao">Tipo de instalação:</label>
                     <select name="tipo_instalacao_id" id="tipo_instalacao">
                         @foreach ($dados['tipo_instalacao'] as $tipo_instalacao)
-                            @if ($tipo_instalacao->id == $dados['projeto']->tipo_instalacao_id)
+                            @if (isset($dados['projeto']) && $tipo_instalacao->id == $dados['projeto']->tipo_instalacao_id)
                                 <option value="{{ $tipo_instalacao->id }}" selected>{{ $tipo_instalacao->tipo }}</option>
                             @else
                                 <option value="{{ $tipo_instalacao->id }}">{{ $tipo_instalacao->tipo }}</option>
