@@ -4,13 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Info(
+ *      title="77sol case",
+ *      version="0.1"
+ * )
+ *
+ * @OA\PathItem(
+ *      path="/cliente"
+ * )
+ */
 class ClientesController extends Controller
 {
     /**
-     * Exibe a tela principal com a lista de clientes cadastrados
-     * @access public
-     * @return mixed
+     * @OA\Get(
+     *      path="/cliente",
+     *      summary="Listar todos os clientes cadastrados",
+     *      tags={"Clientes"},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Lista de clientes"
+     *      )
+     * )
      */
     public function index()
     {
@@ -20,9 +37,19 @@ class ClientesController extends Controller
     }
 
     /**
-     * Exibe e view para realizar o cadastro de clientes
-     * @access public
-     * @return mixed
+     * @OA\Get(
+     *      path="/cliente/cadastrar",
+     *      summary="Exibir o form de cadastro de clientes",
+     *      tags={"Clientes"},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Exibir o form de cadastro de clientes"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Não autorizado"
+     *      )
+     * )
      */
     public function cadastrar()
     {
@@ -30,10 +57,25 @@ class ClientesController extends Controller
     }
 
     /**
-     * Busca e exibe a view para editar os dados do cliente
-     * @param int $id - ID do cliente
-     * @access public
-     * @return mixed
+     * @OA\Get(
+     *      path="/cliente/editar/{id}",
+     *      summary="Exibir o form de editar o cliente",
+     *      tags={"Clientes"},
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          @OA\Schema(type="integer")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Exibir o form de editar o cliente"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Não autorizado"
+     *      )
+     * )
      */
     public function editar(int $id)
     {
@@ -42,10 +84,29 @@ class ClientesController extends Controller
     }
 
     /**
-     * Função para salvar os dados do cliente
-     * @param \Illuminate\Http\Request $request - Dados do formulário
-     * @access public
-     * @return mixed
+     * @OA\Post(
+     *     path="/cliente/salvar",
+     *     summary="Cadastrar um novo cliente",
+     *     tags={"Clientes"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"nome","email", "telefone", "cpf_cnpj"},
+     *             @OA\Property(property="nome", type="string", example="Pedro da Silva"),
+     *             @OA\Property(property="email", type="string", example="pedro.silva@example.com"),
+     *             @OA\Property(property="telefone", type="string", example="11944448888"),
+     *             @OA\Property(property="cpf_cnpj", type="string", example="12345678911"),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Cliente cadastrado com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Requisição inválida"
+     *     )
+     * )
      */
     public function salvar(Request $request)
     {
@@ -69,10 +130,25 @@ class ClientesController extends Controller
     }
 
     /**
-     * Apagar o registro de um cliente
-     * @param int $id - ID do cliente
-     * @access public
-     * @return mixed
+     * @OA\Delete(
+     *      path="/api/cliente/delete/{id}",
+     *      summary="Deletar um cliente",
+     *      tags={"Clientes"},
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          @OA\Schema(type="integer")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Cliente deletado com sucesso"
+     *      ),
+     *      @OA\Response(
+     *          response=500,
+     *          description="Ocorreu um erro ao excluir o cliente"
+     *      )
+     * )
      */
     public function deletar(int $id)
     {

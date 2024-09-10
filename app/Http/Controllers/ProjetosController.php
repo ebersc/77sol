@@ -9,14 +9,45 @@ use App\Models\Cliente;
 use App\Models\Local;
 use App\Models\TipoInstalacao;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 
+/**
+ *
+ * @OA\PathItem(
+ *      path="/projeto"
+ * )
+ */
 class ProjetosController extends Controller
 {
     /**
-     * Exibe a tela principal com a lista de projetos cadastrados
-     * @param \Illuminate\Http\Request $request - Filtros para a listagem
-     * @access public
-     * @return mixed
+     * @OA\Get(
+     *      path="/projeto",
+     *      summary="Listar todos os projetos cadastrados",
+     *      tags={"Projetos"},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Lista de projetos"
+     *      )
+     * )
+     */
+    /**
+     * @OA\Post(
+     *     path="/projeto",
+     *     summary="Lista os projetos aplicando um filtro de busca",
+     *     tags={"Projetos"},
+     *     @OA\RequestBody(
+     *         required=false,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="cliente_id", type="integer", example=1),
+     *             @OA\Property(property="local_id", type="integer", example=2),
+     *             @OA\Property(property="tipo_instalacao_id", type="integer", example=3),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de projetos"
+     *     )
+     * )
      */
     public function index(Request $request)
     {
@@ -27,9 +58,19 @@ class ProjetosController extends Controller
     }
 
     /**
-     * Exibe e view para realizar o cadastro de um projeto
-     * @access public
-     * @return mixed
+     * @OA\Get(
+     *      path="/projeto/cadastrar",
+     *      summary="Exibir o form de cadastro de projetos",
+     *      tags={"Projetos"},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Exibir o form de cadastro de projetos"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Não autorizado"
+     *      )
+     * )
      */
     public function cadastrar()
     {
@@ -38,10 +79,25 @@ class ProjetosController extends Controller
     }
 
     /**
-     * Busca e exibe a view para editar os dados do projeto
-     * @param int $id - ID do projeto
-     * @access public
-     * @return mixed
+     * @OA\Get(
+     *      path="/projeto/editar/{id}",
+     *      summary="Exibir o form para editar o projeto",
+     *      tags={"Projetos"},
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          @OA\Schema(type="integer")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Exibir o form para editar o projeto"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Não autorizado"
+     *      )
+     * )
      */
     public function editar(int $id)
     {
@@ -59,10 +115,25 @@ class ProjetosController extends Controller
     }
 
     /**
-     * Exibir os detalhes do projeto
-     * @param int $id - ID do projeto
-     * @access public
-     * @return mixed
+     * @OA\Get(
+     *      path="/projeto/detalhes/{id}",
+     *      summary="Exibir os detalhes do projeto",
+     *      tags={"Projetos"},
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          @OA\Schema(type="integer")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Exibir os detalhes do projeto"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Não autorizado"
+     *      )
+     * )
      */
     public function verDetalhes(int $id)
     {
@@ -72,10 +143,29 @@ class ProjetosController extends Controller
     }
 
     /**
-     * Salvar o projeto ou atualizar as informações caso seja enviado o ID no request
-     * @param \Illuminate\Http\Request $request
-     * @access public
-     * @return mixed
+     * @OA\Post(
+     *     path="/api/projeto/salvar",
+     *     summary="Cadastrar um novo projeto",
+     *     tags={"Projetos"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"cliente_id", "local_id", "tipo_instalacao_id"},
+     *             @OA\Property(property="cliente_id", type="integer", example=1),
+     *             @OA\Property(property="local_id", type="integer", example=2),
+     *             @OA\Property(property="tipo_instalacao_id", type="integer", example=3),
+     *             @OA\Property(property="equipamento", type="object"),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Projeto cadastrado com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Requisição inválida"
+     *     )
+     * )
      */
     public function salvarProjeto(Request $request)
     {
@@ -90,10 +180,25 @@ class ProjetosController extends Controller
     }
 
     /**
-     * Apagar o registro de um projeto
-     * @param int $id - ID do projeto
-     * @access public
-     * @return mixed
+     * @OA\Delete(
+     *      path="/api/projeto/delete/{id}",
+     *      summary="Deletar um projeto",
+     *      tags={"Projetos"},
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          @OA\Schema(type="integer")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Projeto deletado com sucesso"
+     *      ),
+     *      @OA\Response(
+     *          response=500,
+     *          description="Ocorreu um erro ao excluir o projeto"
+     *      )
+     * )
      */
     public function deletar(int $id)
     {
